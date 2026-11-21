@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Satta Bazzar — Number Picker</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#e8eefc}
+header{text-align:center;padding:28px 16px;background:linear-gradient(135deg,#132b46,#14203a);border-bottom:1px solid #263b59}
+h1{margin:0;color:#f5c542;letter-spacing:1px}header p{color:#b9c8dc;margin:9px 0 0}
+main{max-width:900px;margin:24px auto;padding:0 16px}.panel{background:#111d30;border:1px solid #263b59;border-radius:16px;padding:20px;box-shadow:0 10px 30px #0003}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:16px}
+#grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px}
+.num{padding:12px 4px;border-radius:10px;border:1px solid #344967;background:#182842;color:white;font-weight:700;cursor:pointer}
+.num:hover{background:#263f61}.num.selected{background:#f5c542;color:#111;border-color:#f5c542}
+button.action{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer;background:#f5c542;color:#111}
+button.secondary{background:#263b59;color:#e8eefc}
+#chosen{min-height:30px;color:#f5c542;margin:12px 0;word-break:break-word}
+.notice{font-size:13px;color:#9fb1ca;line-height:1.5;margin-top:16px}
+@media(max-width:500px){#grid{grid-template-columns:repeat(5,minmax(0,1fr))}.num{padding:13px 4px}}
+</style>
+</head>
+<body>
+<header><h1>SATTA BAZZAR</h1><p>Simple 1–100 number selection demo</p></header>
+<main><section class="panel">
+<div class="toolbar"><strong>Select numbers (1–100)</strong><div>
+<button class="action secondary" onclick="clearAll()">Clear</button>
+<button class="action" onclick="shareWhatsApp()">WhatsApp</button>
+</div></div>
+<div id="grid"></div>
+<div id="chosen"><strong>Selected:</strong> None</div>
+<p class="notice">Demo number selector only. It does not accept bets, payments, or promise lottery outcomes. WhatsApp sharing sends your selected numbers as a personal/demo message.</p>
+</section></main>
+<script>
+const picked=new Set(),grid=document.getElementById('grid');
+for(let i=1;i<=100;i++){const b=document.createElement('button');b.className='num';b.textContent=i;b.onclick=()=>{if(picked.has(i)){picked.delete(i);b.classList.remove('selected')}else{picked.add(i);b.classList.add('selected')}update()};grid.appendChild(b)}
+function update(){document.getElementById('chosen').innerHTML='<strong>Selected:</strong> '+(picked.size?[...picked].sort((a,b)=>a-b).join(', '):'None')}
+function clearAll(){picked.clear();document.querySelectorAll('.num.selected').forEach(b=>b.classList.remove('selected'));update()}
+function shareWhatsApp(){if(!picked.size){alert('Select at least one number first.');return}
+const msg='My selected numbers (demo/personal use): '+[...picked].sort((a,b)=>a-b).join(', ');
+window.open('https://wa.me/8700248934?text='+encodeURIComponent(msg),'_blank')}
+</script>
+</body>
+</html>
